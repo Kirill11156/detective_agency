@@ -1,13 +1,18 @@
+# Собственные исключения детективного агентства.
+# Все наследуются от AgencyError, чтобы их можно было ловить одним except.
 from uuid import UUID
 
 
+# Базовое исключение агентства, родитель для всех остальных
 class AgencyError(Exception):
 
     def __init__(self, message: str) -> None:
         super().__init__(message)
+        # храним текст отдельно, чтобы обращаться к нему как error.message
         self.message = message
 
 
+# Наследники принимают данные об ошибке, а текст сообщения собирают сами
 class CaseNotFoundError(AgencyError):
 
     def __init__(self, case_id: UUID) -> None:
@@ -50,6 +55,7 @@ class InvalidReliabilityError(AgencyError):
         self.value = value
 
 
+# Проверяем, выполняется только при запуске этого файла, не при импорте
 if __name__ == "__main__":
     from uuid import uuid4
 
@@ -65,6 +71,7 @@ if __name__ == "__main__":
         SuspectAlreadyClearedError("Иван Петров"),
         InvalidReliabilityError(0),
     ]
+    # Ловим по родителю AgencyError и перехватываются все наши исключения
     for err in errors:
         try:
             raise err
