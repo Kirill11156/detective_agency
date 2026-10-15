@@ -1,6 +1,7 @@
 # Демонстрация работы детективного агентства
 import os
 from datetime import datetime
+from typing import Any
 from uuid import uuid4
 
 from agency import Agency
@@ -148,6 +149,8 @@ def demo_exceptions(agency: Agency) -> None:
     print_header("Обработка исключений")
     theft = agency.find_case_by_status(CaseStatus.CLOSED)[0]
     museum = theft.location
+    # тип Any: строку вместо числа передаём нарочно, чтобы получить TypeError
+    wrong_reliability: Any = "десять"
 
     # каждое действие заведомо ошибочное; ловим и печатаем ошибку
     attempts = [
@@ -162,7 +165,7 @@ def demo_exceptions(agency: Agency) -> None:
         ("повторное оправдание", lambda: theft.suspects[1].clear_suspect()),
         ("пустое имя (ValueError)", lambda: Witness("", "-", "нет", 5)),
         ("строка вместо числа (TypeError)",
-         lambda: Witness("Тест", "-", "нет", "десять")),
+         lambda: Witness("Тест", "-", "нет", wrong_reliability)),
         ("пустая стенограмма (ValueError)", lambda: Interrogation(
             theft.suspects[0], datetime.now(), "   ", 10)),
     ]

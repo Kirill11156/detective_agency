@@ -1,8 +1,8 @@
 {
     "cases": [
         {
-            "id": "5e31f918-907f-464c-9fab-bf0961ca3cd8",
-            "created_at": "2026-10-15T23:22:21.433511",
+            "id": "93639a9c-6775-4a3d-93e9-97a882985226",
+            "created_at": "2026-10-15T23:42:29.068196",
             "title": "Кража картины",
             "status": "closed",
             "priority": "high",
@@ -13,8 +13,8 @@
                 "longitude": 37.597
             },
             "lead_detective": {
-                "id": "d5c9f124-1e82-4ed1-a66c-72ca452d5ea8",
-                "created_at": "2026-10-15T23:22:21.433449",
+                "id": "0c0b3cb8-7a41-4e11-ac86-1bd061239971",
+                "created_at": "2026-10-15T23:42:29.068146",
                 "role": "detective",
                 "name": "Шерлок Холмс",
                 "contact": "+7 900 000-00-01",
@@ -24,8 +24,8 @@
             },
             "suspects": [
                 {
-                    "id": "1a210395-8e00-42a0-884b-1c9045612637",
-                    "created_at": "2026-10-15T23:22:21.433519",
+                    "id": "2928c6fc-476e-4b3b-a599-9b1f5cdcaa61",
+                    "created_at": "2026-10-15T23:42:29.068202",
                     "role": "suspect",
                     "name": "Иван Петров",
                     "contact": "+7 911 111-11-11",
@@ -34,8 +34,8 @@
                     "cleared": false
                 },
                 {
-                    "id": "2efce7a4-cd7e-4e01-affc-352f489b0bac",
-                    "created_at": "2026-10-15T23:22:21.433526",
+                    "id": "a43e2abf-7a78-4cc9-8e1b-ffc48952da1d",
+                    "created_at": "2026-10-15T23:42:29.068207",
                     "role": "suspect",
                     "name": "Анна Смирнова",
                     "contact": "+7 922 222-22-22",
@@ -46,8 +46,8 @@
             ],
             "witnesses": [
                 {
-                    "id": "381bac2b-6d66-41ba-8e96-da114517dffd",
-                    "created_at": "2026-10-15T23:22:21.433530",
+                    "id": "c5d7492d-6278-4500-bff7-11b27ff20ae0",
+                    "created_at": "2026-10-15T23:42:29.068210",
                     "role": "witness",
                     "name": "Пётр Сидоров",
                     "contact": "+7 933 333-33-33",
@@ -57,8 +57,8 @@
             ],
             "evidence": [
                 {
-                    "id": "26e45882-0011-48fd-95f6-51534db3f16c",
-                    "created_at": "2026-10-15T23:22:21.433548",
+                    "id": "6b584c05-455a-4ef5-8914-c076c3055721",
+                    "created_at": "2026-10-15T23:42:29.068222",
                     "evidence_type": "fingerprint",
                     "description": "Отпечаток на раме",
                     "found_at": {
@@ -72,8 +72,8 @@
                     "storage_location": "Сейф №3"
                 },
                 {
-                    "id": "0c5ec6b4-f48a-4562-b2fb-57c27fc7b0f1",
-                    "created_at": "2026-10-15T23:22:21.433559",
+                    "id": "e2e0487b-02d3-401e-992e-c6aea39a6854",
+                    "created_at": "2026-10-15T23:42:29.068231",
                     "evidence_type": "digital",
                     "description": "Запись камеры у входа",
                     "found_at": {
@@ -89,11 +89,11 @@
             ],
             "interrogations": [
                 {
-                    "id": "63585dc4-ef70-4af4-957c-41dcf781fdc5",
-                    "created_at": "2026-10-15T23:22:21.433568",
+                    "id": "461dc55f-c7f4-4914-8e78-540b50b2b066",
+                    "created_at": "2026-10-15T23:42:29.068238",
                     "person": {
-                        "id": "1a210395-8e00-42a0-884b-1c9045612637",
-                        "created_at": "2026-10-15T23:22:21.433519",
+                        "id": "2928c6fc-476e-4b3b-a599-9b1f5cdcaa61",
+                        "created_at": "2026-10-15T23:42:29.068202",
                         "role": "suspect",
                         "name": "Иван Петров",
                         "contact": "+7 911 111-11-11",
@@ -106,11 +106,11 @@
                     "duration_minutes": 45
                 },
                 {
-                    "id": "90f599cf-939e-4bfd-9894-e315ce0f68e2",
-                    "created_at": "2026-10-15T23:22:21.433577",
+                    "id": "2c2f5610-f2cd-46fc-9e82-881780ccbada",
+                    "created_at": "2026-10-15T23:42:29.068246",
                     "person": {
-                        "id": "381bac2b-6d66-41ba-8e96-da114517dffd",
-                        "created_at": "2026-10-15T23:22:21.433530",
+                        "id": "c5d7492d-6278-4500-bff7-11b27ff20ae0",
+                        "created_at": "2026-10-15T23:42:29.068210",
                         "role": "witness",
                         "name": "Пётр Сидоров",
                         "contact": "+7 933 333-33-33",
@@ -124,8 +124,8 @@
             ]
         },
         {
-            "id": "3f07c006-ce48-4841-a2e2-b527cb9182c0",
-            "created_at": "2026-10-15T23:22:21.433590",
+            "id": "675e0619-38c6-4c12-9fcd-5480a0a0a67a",
+            "created_at": "2026-10-15T23:42:29.068260",
             "title": "Взлом корпоративной почты",
             "status": "in_progress",
             "priority": "critical",
@@ -136,8 +136,8 @@
                 "longitude": 37.539
             },
             "lead_detective": {
-                "id": "44509381-3a1b-494a-be28-9b9bbf1adc79",
-                "created_at": "2026-10-15T23:22:21.433480",
+                "id": "27583bd0-3279-4ab8-8a64-e502a187bc1e",
+                "created_at": "2026-10-15T23:42:29.068172",
                 "role": "detective",
                 "name": "Джон Ватсон",
                 "contact": "+7 900 000-00-02",
@@ -147,8 +147,8 @@
             },
             "suspects": [
                 {
-                    "id": "98782a91-c6be-4103-ae59-f552c90137cc",
-                    "created_at": "2026-10-15T23:22:21.433593",
+                    "id": "bae0f703-7f44-483e-abb6-b5044753b0c9",
+                    "created_at": "2026-10-15T23:42:29.068262",
                     "role": "suspect",
                     "name": "Олег Кузнецов",
                     "contact": "+7 944 444-44-44",
@@ -160,8 +160,8 @@
             "witnesses": [],
             "evidence": [
                 {
-                    "id": "e81b8abe-2514-4480-a603-b5e631807ba1",
-                    "created_at": "2026-10-15T23:22:21.433597",
+                    "id": "9f3cc8d1-271a-487d-bcc5-321b645b95c6",
+                    "created_at": "2026-10-15T23:42:29.068268",
                     "evidence_type": "digital",
                     "description": "Логи почтового сервера",
                     "found_at": {
@@ -178,8 +178,8 @@
             "interrogations": []
         },
         {
-            "id": "40ef9eb1-992f-4b99-8ecd-32cd91707670",
-            "created_at": "2026-10-15T23:22:21.433603",
+            "id": "917a3a03-c014-45a0-bb0c-60d72e24ddb3",
+            "created_at": "2026-10-15T23:42:29.068274",
             "title": "Пропажа собаки",
             "status": "in_progress",
             "priority": "low",
@@ -190,8 +190,8 @@
                 "longitude": 37.601
             },
             "lead_detective": {
-                "id": "ce0f8529-9f61-4f94-97db-0837cd57b56e",
-                "created_at": "2026-10-15T23:22:21.433485",
+                "id": "5a2abeaa-f4fa-42eb-a9f6-5a6ab2cd8faf",
+                "created_at": "2026-10-15T23:42:29.068178",
                 "role": "detective",
                 "name": "Инспектор Лестрейд",
                 "contact": "+7 900 000-00-03",
@@ -202,8 +202,8 @@
             "suspects": [],
             "witnesses": [
                 {
-                    "id": "6ff4763e-b302-4ed4-926f-e48fcd5ca480",
-                    "created_at": "2026-10-15T23:22:21.433605",
+                    "id": "aa843a26-4e47-4ea5-9fef-fea4a8fecbe0",
+                    "created_at": "2026-10-15T23:42:29.068276",
                     "role": "witness",
                     "name": "Мария Волкова",
                     "contact": "+7 955 555-55-55",
@@ -213,8 +213,8 @@
             ],
             "evidence": [
                 {
-                    "id": "1a6e3d31-1173-499e-a1cb-c92b31633298",
-                    "created_at": "2026-10-15T23:22:21.433610",
+                    "id": "6e43fa76-8978-4fbf-b626-30b75a41924e",
+                    "created_at": "2026-10-15T23:42:29.068280",
                     "evidence_type": "document",
                     "description": "Ошейник с жетоном",
                     "found_at": {
@@ -231,8 +231,8 @@
             "interrogations": []
         },
         {
-            "id": "34d6a398-5102-4106-aafc-59bae90ae6e5",
-            "created_at": "2026-10-15T23:22:21.433615",
+            "id": "18c59138-3217-4b9c-9e4e-3fed9a6da3b3",
+            "created_at": "2026-10-15T23:42:29.068285",
             "title": "Подделка завещания",
             "status": "open",
             "priority": "medium",
@@ -247,8 +247,8 @@
             "witnesses": [],
             "evidence": [
                 {
-                    "id": "5ede521a-991f-4551-b6b3-f43b8a3d7401",
-                    "created_at": "2026-10-15T23:22:21.433617",
+                    "id": "c46975ca-6970-41b1-ae97-d02d766facb6",
+                    "created_at": "2026-10-15T23:42:29.068287",
                     "evidence_type": "document",
                     "description": "Завещание с подписью",
                     "found_at": {

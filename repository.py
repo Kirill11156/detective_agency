@@ -1,6 +1,6 @@
 # Хранилище дел: CRUD и сохранение/загрузка в JSON и XML
 import json
-import xml.etree.ElementTree as ET
+from xml.etree import ElementTree
 from typing import Any
 from uuid import UUID
 
@@ -86,17 +86,17 @@ class CaseRepository:
     # --- XML ---
 
     def save_to_xml(self, path: str) -> None:
-        root = ET.Element("agency")
+        root = ElementTree.Element("agency")
         for case in self._cases.values():
             root.append(_to_xml("case", case.to_dict()))
-        tree = ET.ElementTree(root)
-        ET.indent(tree, space="    ")
+        tree = ElementTree.ElementTree(root)
+        ElementTree.indent(tree, space="    ")
         tree.write(path, encoding="utf-8", xml_declaration=True)
 
     def load_from_xml(self, path: str) -> None:
         try:
-            root = ET.parse(path).getroot()
-        except ET.ParseError as error:
+            root = ElementTree.parse(path).getroot()
+        except ElementTree.ParseError as error:
             message = f"Файл {path} не является XML: {error}"
             raise ValueError(message) from error
         if root.tag != "agency":
@@ -113,8 +113,8 @@ class CaseRepository:
 
 # В XML всё хранится текстом, поэтому у каждого тега пишем атрибут type,
 # чтобы при чтении вернуть число числом, а список списком
-def _to_xml(tag: str, value: Any) -> ET.Element:
-    element = ET.Element(tag)
+def _to_xml(tag: str, value: Any) -> ElementTree.Element:
+    element = ElementTree.Element(tag)
     if value is None:
         element.set("type", "none")
     elif isinstance(value, bool):
@@ -142,7 +142,7 @@ def _to_xml(tag: str, value: Any) -> ET.Element:
     return element
 
 
-def _from_xml(element: ET.Element) -> Any:
+def _from_xml(element: ElementTree.Element) -> Any:
     kind = element.get("type", "str")
     text = element.text or ""
     if kind == "none":

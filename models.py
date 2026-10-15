@@ -139,6 +139,12 @@ class Person(BaseEntity):
     def get_role(self) -> str:
         pass
 
+    # уточняем тип: из словаря восстанавливается именно человек
+    @classmethod
+    @abstractmethod
+    def from_dict(cls, data: dict[str, Any]) -> "Person":
+        pass
+
     def _base_dict(self) -> dict[str, Any]:
         data = super()._base_dict()
         # роль по имени класса: detective / suspect / witness
@@ -188,7 +194,8 @@ class Detective(Person):
 
     # закрыть дело может только его ведущий детектив
     def close_case(self, case: "Case") -> None:
-        if case.lead_detective is None or case.lead_detective.id != self.id:
+        lead = case.lead_detective
+        if lead is None or lead.id != self.id:
             raise ValueError(
                 f"{self.name} не ведёт дело «{case.title}», закрыть нельзя"
             )

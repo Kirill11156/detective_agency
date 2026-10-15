@@ -54,9 +54,12 @@ class Agency:
 
     # сравниваем по id: после загрузки из файла объекты уже другие
     def find_cases_by_detective(self, detective: Detective) -> list[Case]:
-        return [case for case in self.cases
-                if case.lead_detective is not None
-                and case.lead_detective.id == detective.id]
+        result: list[Case] = []
+        for case in self.cases:
+            lead = case.lead_detective
+            if lead is not None and lead.id == detective.id:
+                result.append(case)
+        return result
 
     def get_open_cases(self) -> list[Case]:
         return [case for case in self.cases if not case.is_closed]
