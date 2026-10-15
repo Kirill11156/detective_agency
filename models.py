@@ -520,3 +520,84 @@ class DigitalEvidence(Evidence):
             UUID(data["id"]),
             datetime.fromisoformat(data["created_at"]),
         )
+
+
+# Восстановление человека по полю role (для допросов)
+def person_from_dict(data: dict[str, Any]) -> Person:
+    roles: dict[str, type[Person]] = {
+        "detective": Detective,
+        "suspect": Suspect,
+        "witness": Witness,
+    }
+    role = data["role"]
+    if role not in roles:
+        raise ValueError(f"Неизвестная роль: {role}")
+    return roles[role].from_dict(data)
+
+
+# Допрос: кого, когда, стенограмма и длительность
+class Interrogation(BaseEntity):
+
+    def __init__(self, person: Person, conducted_at: datetime,
+                 transcript: str, duration_minutes: int,
+                 entity_id: UUID | None = None,
+                 created_at: datetime | None = None) -> None:
+        super().__init__(entity_id, created_at)
+        if not isinstance(person, Person):
+            raise TypeError("Допросить можно только человека (Person)")
+        if not isinstance(conducted_at, datetime):
+            raise TypeError("Время допроса должно быть datetime")
+        self._person = person
+        self._conducted_at = conducted_at
+        self._transcript = check_text(transcript, "Стенограмма")
+        self._duration_minutes = check_int(duration_minutes, "Длительность")
+        if self._duration_minutes <= 0:
+            raise ValueError("Длительность допроса должна быть больше 0")
+
+    @property
+    def person(self) -> Person:
+        return self._person
+
+    @property
+    def conducted_at(self) -> datetime:
+        return self._conducted_at
+
+    @property
+    def transcript(self) -> str:
+        return self._transcript
+
+    @property
+    def duration_minutes(self) -> int:
+        return self._duration_minutes
+
+    def to_dict(self) -> dict[str, Any]:
+        data = self._base_dict()
+        data["person"] = self._person.to_dict()
+        data["conducted_at"] = self._conducted_at.isoformat()
+        data["transcript"] = self._transcript
+        data["duration_minutes"] = self._duration_minutes
+        return data
+
+    # people — уже загруженные участники дела, чтобы не создавать копии
+    @classmethod
+    def from_dict(cls, data: dict[str, Any],
+                  people: dict[UUID, Person] | None = None
+                  ) -> "Interrogation":
+        person_id = UUID(data["person"]["id"])
+        if people is not None and person_id in people:
+            person = people[person_id]
+        else:
+            person = person_from_dict(data["person"])
+        return cls(
+            person,
+            datetime.fromisoformat(data["conducted_at"]),
+            data["transcript"],
+            data["duration_minutes"],
+            UUID(data["id"]),
+            datetime.fromisoformat(data["created_at"]),
+        )
+
+    def __str__(self) -> str:
+        return (f"Допрос: {self._person}, "
+                f"{self._conducted_at:%d.%m.%Y %H:%M}, "
+                f"{self._duration_minutes} мин")
