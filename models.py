@@ -332,3 +332,191 @@ class Witness(Person):
             UUID(data["id"]),
             datetime.fromisoformat(data["created_at"]),
         )
+
+
+# Место: адрес и координаты. Своего id не имеет, поэтому не BaseEntity
+class Location:
+
+    def __init__(self, address: str, place_type: str,
+                 latitude: float, longitude: float) -> None:
+        self._address = check_text(address, "Адрес")
+        self._place_type = check_text(place_type, "Тип места")
+        self._latitude = check_number(latitude, "Широта")
+        self._longitude = check_number(longitude, "Долгота")
+        if not -90 <= self._latitude <= 90:
+            raise ValueError("Широта должна быть от -90 до 90")
+        if not -180 <= self._longitude <= 180:
+            raise ValueError("Долгота должна быть от -180 до 180")
+
+    @property
+    def address(self) -> str:
+        return self._address
+
+    @property
+    def place_type(self) -> str:
+        return self._place_type
+
+    @property
+    def latitude(self) -> float:
+        return self._latitude
+
+    @property
+    def longitude(self) -> float:
+        return self._longitude
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "address": self._address,
+            "place_type": self._place_type,
+            "latitude": self._latitude,
+            "longitude": self._longitude,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> "Location":
+        return cls(data["address"], data["place_type"],
+                   data["latitude"], data["longitude"])
+
+    def __str__(self) -> str:
+        return f"{self._place_type}, {self._address}"
+
+
+# Улика: абстрактный класс, конкретные виды описывают себя по-своему
+class Evidence(BaseEntity):
+
+    def __init__(self, evidence_type: EvidenceType, description: str,
+                 found_at: Location,
+                 entity_id: UUID | None = None,
+                 created_at: datetime | None = None) -> None:
+        super().__init__(entity_id, created_at)
+        if not isinstance(evidence_type, EvidenceType):
+            raise TypeError("Тип улики должен быть EvidenceType")
+        if not isinstance(found_at, Location):
+            raise TypeError("Место находки должно быть Location")
+        self._evidence_type = evidence_type
+        self._description = check_text(description, "Описание улики")
+        self._found_at = found_at
+
+    @property
+    def evidence_type(self) -> EvidenceType:
+        return self._evidence_type
+
+    @property
+    def description(self) -> str:
+        return self._description
+
+    @property
+    def found_at(self) -> Location:
+        return self._found_at
+
+    # полиморфизм: у каждой улики своя сводка
+    @abstractmethod
+    def get_summary(self) -> str:
+        pass
+
+    def _base_dict(self) -> dict[str, Any]:
+        data = super()._base_dict()
+        data["evidence_type"] = self._evidence_type.value
+        data["description"] = self._description
+        data["found_at"] = self._found_at.to_dict()
+        return data
+
+    # по полю kind выбираем, объект какого класса создать
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> "Evidence":
+        kinds: dict[str, type[Evidence]] = {
+            "physical": PhysicalEvidence,
+            "digital": DigitalEvidence,
+        }
+        kind = data["kind"]
+        if kind not in kinds:
+            raise ValueError(f"Неизвестный вид улики: {kind}")
+        return kinds[kind].from_dict(data)
+
+
+class PhysicalEvidence(Evidence):
+
+    def __init__(self, evidence_type: EvidenceType, description: str,
+                 found_at: Location, weight: float, storage_location: str,
+                 entity_id: UUID | None = None,
+                 created_at: datetime | None = None) -> None:
+        super().__init__(evidence_type, description, found_at,
+                         entity_id, created_at)
+        self._weight = check_number(weight, "Вес")
+        if self._weight < 0:
+            raise ValueError("Вес улики не может быть отрицательным")
+        self._storage_location = check_text(storage_location, "Хранилище")
+
+    @property
+    def weight(self) -> float:
+        return self._weight
+
+    @property
+    def storage_location(self) -> str:
+        return self._storage_location
+
+    def get_summary(self) -> str:
+        return (f"[Вещдок] {self.description}, {self._weight} кг, "
+                f"хранится: {self._storage_location}")
+
+    def to_dict(self) -> dict[str, Any]:
+        data = self._base_dict()
+        data["kind"] = "physical"
+        data["weight"] = self._weight
+        data["storage_location"] = self._storage_location
+        return data
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> "PhysicalEvidence":
+        return cls(
+            EvidenceType(data["evidence_type"]),
+            data["description"],
+            Location.from_dict(data["found_at"]),
+            data["weight"],
+            data["storage_location"],
+            UUID(data["id"]),
+            datetime.fromisoformat(data["created_at"]),
+        )
+
+
+class DigitalEvidence(Evidence):
+
+    def __init__(self, evidence_type: EvidenceType, description: str,
+                 found_at: Location, file_hash: str, device: str,
+                 entity_id: UUID | None = None,
+                 created_at: datetime | None = None) -> None:
+        super().__init__(evidence_type, description, found_at,
+                         entity_id, created_at)
+        self._file_hash = check_text(file_hash, "Хеш файла")
+        self._device = check_text(device, "Устройство")
+
+    @property
+    def file_hash(self) -> str:
+        return self._file_hash
+
+    @property
+    def device(self) -> str:
+        return self._device
+
+    def get_summary(self) -> str:
+        return (f"[Цифровая] {self.description}, устройство: "
+                f"{self._device}, хеш: {self._file_hash[:8]}...")
+
+    def to_dict(self) -> dict[str, Any]:
+        data = self._base_dict()
+        data["kind"] = "digital"
+        data["file_hash"] = self._file_hash
+        data["device"] = self._device
+        return data
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> "DigitalEvidence":
+        return cls(
+            EvidenceType(data["evidence_type"]),
+            data["description"],
+            Location.from_dict(data["found_at"]),
+            data["file_hash"],
+            data["device"],
+            UUID(data["id"]),
+            datetime.fromisoformat(data["created_at"]),
+        )
