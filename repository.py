@@ -1,5 +1,6 @@
-# Хранилище дел: CRUD и сохранение/загрузка в JSON
+# Хранилище дел: CRUD и сохранение/загрузка в JSON и XML
 import json
+import xml.etree.ElementTree as ET
 from typing import Any
 from uuid import UUID
 
@@ -81,3 +82,81 @@ class CaseRepository:
         except (KeyError, TypeError) as error:
             raise ValueError(f"В файле {path} нет списка cases") from error
         self._load_cases(items)
+
+    # --- XML ---
+
+    def save_to_xml(self, path: str) -> None:
+        root = ET.Element("agency")
+        for case in self._cases.values():
+            root.append(_to_xml("case", case.to_dict()))
+        tree = ET.ElementTree(root)
+        ET.indent(tree, space="    ")
+        tree.write(path, encoding="utf-8", xml_declaration=True)
+
+    def load_from_xml(self, path: str) -> None:
+        try:
+            root = ET.parse(path).getroot()
+        except ET.ParseError as error:
+            message = f"Файл {path} не является XML: {error}"
+            raise ValueError(message) from error
+        if root.tag != "agency":
+            raise ValueError(f"Корневой тег должен быть agency, а не "
+                             f"{root.tag}")
+        items: list[dict[str, Any]] = []
+        for element in root.findall("case"):
+            value = _from_xml(element)
+            if not isinstance(value, dict):
+                raise ValueError("Тег case должен содержать поля дела")
+            items.append(value)
+        self._load_cases(items)
+
+
+# В XML всё хранится текстом, поэтому у каждого тега пишем атрибут type,
+# чтобы при чтении вернуть число числом, а список списком
+def _to_xml(tag: str, value: Any) -> ET.Element:
+    element = ET.Element(tag)
+    if value is None:
+        element.set("type", "none")
+    elif isinstance(value, bool):
+        element.set("type", "bool")
+        element.text = "true" if value else "false"
+    elif isinstance(value, int):
+        element.set("type", "int")
+        element.text = str(value)
+    elif isinstance(value, float):
+        element.set("type", "float")
+        element.text = str(value)
+    elif isinstance(value, str):
+        element.set("type", "str")
+        element.text = value
+    elif isinstance(value, dict):
+        element.set("type", "dict")
+        for key, item in value.items():
+            element.append(_to_xml(key, item))
+    elif isinstance(value, list):
+        element.set("type", "list")
+        for item in value:
+            element.append(_to_xml("item", item))
+    else:
+        raise TypeError(f"Нельзя записать в XML значение {value!r}")
+    return element
+
+
+def _from_xml(element: ET.Element) -> Any:
+    kind = element.get("type", "str")
+    text = element.text or ""
+    if kind == "none":
+        return None
+    if kind == "bool":
+        return text == "true"
+    if kind == "int":
+        return int(text)
+    if kind == "float":
+        return float(text)
+    if kind == "str":
+        return text
+    if kind == "dict":
+        return {child.tag: _from_xml(child) for child in element}
+    if kind == "list":
+        return [_from_xml(child) for child in element]
+    raise ValueError(f"Неизвестный тип в XML: {kind}")
