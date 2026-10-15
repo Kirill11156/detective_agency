@@ -1,4 +1,6 @@
-# Хранилище дел: CRUD (создание, чтение, обновление, удаление)
+# Хранилище дел: CRUD и сохранение/загрузка в JSON
+import json
+from typing import Any
 from uuid import UUID
 
 from exceptions import CaseNotFoundError
@@ -42,3 +44,40 @@ class CaseRepository:
 
     def __len__(self) -> int:
         return len(self._cases)
+
+    # общая часть загрузки: из списка словарей собираем дела
+    def _load_cases(self, items: list[dict[str, Any]]) -> None:
+        loaded: dict[UUID, Case] = {}
+        for number, item in enumerate(items, start=1):
+            try:
+                case = Case.from_dict(item)
+            except KeyError as error:
+                raise ValueError(
+                    f"Дело №{number}: в данных нет поля {error}") from error
+            except (TypeError, ValueError) as error:
+                raise ValueError(
+                    f"Дело №{number}: неверные данные ({error})") from error
+            loaded[case.id] = case
+        # заменяем содержимое, только если всё загрузилось без ошибок
+        self._cases = loaded
+
+    # --- JSON ---
+
+    def save_to_json(self, path: str) -> None:
+        data = {"cases": [case.to_dict() for case in self._cases.values()]}
+        with open(path, "w", encoding="utf-8") as file:
+            json.dump(data, file, ensure_ascii=False, indent=4)
+
+    def load_from_json(self, path: str) -> None:
+        # FileNotFoundError не ловим: о нём должен узнать вызывающий код
+        with open(path, "r", encoding="utf-8") as file:
+            try:
+                data = json.load(file)
+            except json.JSONDecodeError as error:
+                message = f"Файл {path} не является JSON: {error}"
+                raise ValueError(message) from error
+        try:
+            items = data["cases"]
+        except (KeyError, TypeError) as error:
+            raise ValueError(f"В файле {path} нет списка cases") from error
+        self._load_cases(items)
