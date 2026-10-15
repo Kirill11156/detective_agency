@@ -1,0 +1,267 @@
+<?xml version='1.0' encoding='utf-8'?>
+<agency>
+    <case type="dict">
+        <id type="str">5e31f918-907f-464c-9fab-bf0961ca3cd8</id>
+        <created_at type="str">2026-10-15T23:22:21.433511</created_at>
+        <title type="str">Кража картины</title>
+        <status type="str">closed</status>
+        <priority type="str">high</priority>
+        <location type="dict">
+            <address type="str">ул. Пречистенка, 10</address>
+            <place_type type="str">музей</place_type>
+            <latitude type="float">55.744</latitude>
+            <longitude type="float">37.597</longitude>
+        </location>
+        <lead_detective type="dict">
+            <id type="str">d5c9f124-1e82-4ed1-a66c-72ca452d5ea8</id>
+            <created_at type="str">2026-10-15T23:22:21.433449</created_at>
+            <role type="str">detective</role>
+            <name type="str">Шерлок Холмс</name>
+            <contact type="str">+7 900 000-00-01</contact>
+            <specialization type="str">detective</specialization>
+            <rank type="str">Старший детектив</rank>
+            <solved_cases type="int">13</solved_cases>
+        </lead_detective>
+        <suspects type="list">
+            <item type="dict">
+                <id type="str">1a210395-8e00-42a0-884b-1c9045612637</id>
+                <created_at type="str">2026-10-15T23:22:21.433519</created_at>
+                <role type="str">suspect</role>
+                <name type="str">Иван Петров</name>
+                <contact type="str">+7 911 111-11-11</contact>
+                <alibi type="str">был дома один</alibi>
+                <suspicion_level type="int">90</suspicion_level>
+                <cleared type="bool">false</cleared>
+            </item>
+            <item type="dict">
+                <id type="str">2efce7a4-cd7e-4e01-affc-352f489b0bac</id>
+                <created_at type="str">2026-10-15T23:22:21.433526</created_at>
+                <role type="str">suspect</role>
+                <name type="str">Анна Смирнова</name>
+                <contact type="str">+7 922 222-22-22</contact>
+                <alibi type="str">была на работе, есть пропуск</alibi>
+                <suspicion_level type="int">0</suspicion_level>
+                <cleared type="bool">true</cleared>
+            </item>
+        </suspects>
+        <witnesses type="list">
+            <item type="dict">
+                <id type="str">381bac2b-6d66-41ba-8e96-da114517dffd</id>
+                <created_at type="str">2026-10-15T23:22:21.433530</created_at>
+                <role type="str">witness</role>
+                <name type="str">Пётр Сидоров</name>
+                <contact type="str">+7 933 333-33-33</contact>
+                <testimony type="str">видел мужчину в сером пальто</testimony>
+                <reliability type="int">7</reliability>
+            </item>
+        </witnesses>
+        <evidence type="list">
+            <item type="dict">
+                <id type="str">26e45882-0011-48fd-95f6-51534db3f16c</id>
+                <created_at type="str">2026-10-15T23:22:21.433548</created_at>
+                <evidence_type type="str">fingerprint</evidence_type>
+                <description type="str">Отпечаток на раме</description>
+                <found_at type="dict">
+                    <address type="str">ул. Пречистенка, 10</address>
+                    <place_type type="str">музей</place_type>
+                    <latitude type="float">55.744</latitude>
+                    <longitude type="float">37.597</longitude>
+                </found_at>
+                <kind type="str">physical</kind>
+                <weight type="float">0.01</weight>
+                <storage_location type="str">Сейф №3</storage_location>
+            </item>
+            <item type="dict">
+                <id type="str">0c5ec6b4-f48a-4562-b2fb-57c27fc7b0f1</id>
+                <created_at type="str">2026-10-15T23:22:21.433559</created_at>
+                <evidence_type type="str">digital</evidence_type>
+                <description type="str">Запись камеры у входа</description>
+                <found_at type="dict">
+                    <address type="str">ул. Пречистенка, 10</address>
+                    <place_type type="str">музей</place_type>
+                    <latitude type="float">55.744</latitude>
+                    <longitude type="float">37.597</longitude>
+                </found_at>
+                <kind type="str">digital</kind>
+                <file_hash type="str">a3f5c9d2e81b4f7a</file_hash>
+                <device type="str">Камера №2</device>
+            </item>
+        </evidence>
+        <interrogations type="list">
+            <item type="dict">
+                <id type="str">63585dc4-ef70-4af4-957c-41dcf781fdc5</id>
+                <created_at type="str">2026-10-15T23:22:21.433568</created_at>
+                <person type="dict">
+                    <id type="str">1a210395-8e00-42a0-884b-1c9045612637</id>
+                    <created_at type="str">2026-10-15T23:22:21.433519</created_at>
+                    <role type="str">suspect</role>
+                    <name type="str">Иван Петров</name>
+                    <contact type="str">+7 911 111-11-11</contact>
+                    <alibi type="str">был дома один</alibi>
+                    <suspicion_level type="int">90</suspicion_level>
+                    <cleared type="bool">false</cleared>
+                </person>
+                <conducted_at type="str">2026-10-01T14:30:00</conducted_at>
+                <transcript type="str">Утверждает, что весь вечер был дома</transcript>
+                <duration_minutes type="int">45</duration_minutes>
+            </item>
+            <item type="dict">
+                <id type="str">90f599cf-939e-4bfd-9894-e315ce0f68e2</id>
+                <created_at type="str">2026-10-15T23:22:21.433577</created_at>
+                <person type="dict">
+                    <id type="str">381bac2b-6d66-41ba-8e96-da114517dffd</id>
+                    <created_at type="str">2026-10-15T23:22:21.433530</created_at>
+                    <role type="str">witness</role>
+                    <name type="str">Пётр Сидоров</name>
+                    <contact type="str">+7 933 333-33-33</contact>
+                    <testimony type="str">видел мужчину в сером пальто</testimony>
+                    <reliability type="int">7</reliability>
+                </person>
+                <conducted_at type="str">2026-10-01T16:00:00</conducted_at>
+                <transcript type="str">Описал подозрительного мужчину у служебного входа</transcript>
+                <duration_minutes type="int">30</duration_minutes>
+            </item>
+        </interrogations>
+    </case>
+    <case type="dict">
+        <id type="str">3f07c006-ce48-4841-a2e2-b527cb9182c0</id>
+        <created_at type="str">2026-10-15T23:22:21.433590</created_at>
+        <title type="str">Взлом корпоративной почты</title>
+        <status type="str">in_progress</status>
+        <priority type="str">critical</priority>
+        <location type="dict">
+            <address type="str">Пресненская наб., 12</address>
+            <place_type type="str">офис</place_type>
+            <latitude type="float">55.749</latitude>
+            <longitude type="float">37.539</longitude>
+        </location>
+        <lead_detective type="dict">
+            <id type="str">44509381-3a1b-494a-be28-9b9bbf1adc79</id>
+            <created_at type="str">2026-10-15T23:22:21.433480</created_at>
+            <role type="str">detective</role>
+            <name type="str">Джон Ватсон</name>
+            <contact type="str">+7 900 000-00-02</contact>
+            <specialization type="str">forensic</specialization>
+            <rank type="str">Детектив</rank>
+            <solved_cases type="int">3</solved_cases>
+        </lead_detective>
+        <suspects type="list">
+            <item type="dict">
+                <id type="str">98782a91-c6be-4103-ae59-f552c90137cc</id>
+                <created_at type="str">2026-10-15T23:22:21.433593</created_at>
+                <role type="str">suspect</role>
+                <name type="str">Олег Кузнецов</name>
+                <contact type="str">+7 944 444-44-44</contact>
+                <alibi type="str">был в отпуске</alibi>
+                <suspicion_level type="int">60</suspicion_level>
+                <cleared type="bool">false</cleared>
+            </item>
+        </suspects>
+        <witnesses type="list" />
+        <evidence type="list">
+            <item type="dict">
+                <id type="str">e81b8abe-2514-4480-a603-b5e631807ba1</id>
+                <created_at type="str">2026-10-15T23:22:21.433597</created_at>
+                <evidence_type type="str">digital</evidence_type>
+                <description type="str">Логи почтового сервера</description>
+                <found_at type="dict">
+                    <address type="str">Пресненская наб., 12</address>
+                    <place_type type="str">офис</place_type>
+                    <latitude type="float">55.749</latitude>
+                    <longitude type="float">37.539</longitude>
+                </found_at>
+                <kind type="str">digital</kind>
+                <file_hash type="str">9b1e7c3f0a2d5e8b</file_hash>
+                <device type="str">Сервер mail-01</device>
+            </item>
+        </evidence>
+        <interrogations type="list" />
+    </case>
+    <case type="dict">
+        <id type="str">40ef9eb1-992f-4b99-8ecd-32cd91707670</id>
+        <created_at type="str">2026-10-15T23:22:21.433603</created_at>
+        <title type="str">Пропажа собаки</title>
+        <status type="str">in_progress</status>
+        <priority type="str">low</priority>
+        <location type="dict">
+            <address type="str">Парк Горького</address>
+            <place_type type="str">улица</place_type>
+            <latitude type="float">55.729</latitude>
+            <longitude type="float">37.601</longitude>
+        </location>
+        <lead_detective type="dict">
+            <id type="str">ce0f8529-9f61-4f94-97db-0837cd57b56e</id>
+            <created_at type="str">2026-10-15T23:22:21.433485</created_at>
+            <role type="str">detective</role>
+            <name type="str">Инспектор Лестрейд</name>
+            <contact type="str">+7 900 000-00-03</contact>
+            <specialization type="str">analyst</specialization>
+            <rank type="str">Инспектор</rank>
+            <solved_cases type="int">0</solved_cases>
+        </lead_detective>
+        <suspects type="list" />
+        <witnesses type="list">
+            <item type="dict">
+                <id type="str">6ff4763e-b302-4ed4-926f-e48fcd5ca480</id>
+                <created_at type="str">2026-10-15T23:22:21.433605</created_at>
+                <role type="str">witness</role>
+                <name type="str">Мария Волкова</name>
+                <contact type="str">+7 955 555-55-55</contact>
+                <testimony type="str">видела собаку у пруда</testimony>
+                <reliability type="int">4</reliability>
+            </item>
+        </witnesses>
+        <evidence type="list">
+            <item type="dict">
+                <id type="str">1a6e3d31-1173-499e-a1cb-c92b31633298</id>
+                <created_at type="str">2026-10-15T23:22:21.433610</created_at>
+                <evidence_type type="str">document</evidence_type>
+                <description type="str">Ошейник с жетоном</description>
+                <found_at type="dict">
+                    <address type="str">Парк Горького</address>
+                    <place_type type="str">улица</place_type>
+                    <latitude type="float">55.729</latitude>
+                    <longitude type="float">37.601</longitude>
+                </found_at>
+                <kind type="str">physical</kind>
+                <weight type="float">0.2</weight>
+                <storage_location type="str">Шкаф улик №1</storage_location>
+            </item>
+        </evidence>
+        <interrogations type="list" />
+    </case>
+    <case type="dict">
+        <id type="str">34d6a398-5102-4106-aafc-59bae90ae6e5</id>
+        <created_at type="str">2026-10-15T23:22:21.433615</created_at>
+        <title type="str">Подделка завещания</title>
+        <status type="str">open</status>
+        <priority type="str">medium</priority>
+        <location type="dict">
+            <address type="str">ул. Ильинка, 4</address>
+            <place_type type="str">квартира</place_type>
+            <latitude type="float">55.755</latitude>
+            <longitude type="float">37.625</longitude>
+        </location>
+        <lead_detective type="none" />
+        <suspects type="list" />
+        <witnesses type="list" />
+        <evidence type="list">
+            <item type="dict">
+                <id type="str">5ede521a-991f-4551-b6b3-f43b8a3d7401</id>
+                <created_at type="str">2026-10-15T23:22:21.433617</created_at>
+                <evidence_type type="str">document</evidence_type>
+                <description type="str">Завещание с подписью</description>
+                <found_at type="dict">
+                    <address type="str">ул. Ильинка, 4</address>
+                    <place_type type="str">квартира</place_type>
+                    <latitude type="float">55.755</latitude>
+                    <longitude type="float">37.625</longitude>
+                </found_at>
+                <kind type="str">physical</kind>
+                <weight type="float">0.05</weight>
+                <storage_location type="str">Сейф №1</storage_location>
+            </item>
+        </evidence>
+        <interrogations type="list" />
+    </case>
+</agency>

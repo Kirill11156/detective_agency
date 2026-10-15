@@ -1,0 +1,268 @@
+{
+    "cases": [
+        {
+            "id": "5e31f918-907f-464c-9fab-bf0961ca3cd8",
+            "created_at": "2026-10-15T23:22:21.433511",
+            "title": "Кража картины",
+            "status": "closed",
+            "priority": "high",
+            "location": {
+                "address": "ул. Пречистенка, 10",
+                "place_type": "музей",
+                "latitude": 55.744,
+                "longitude": 37.597
+            },
+            "lead_detective": {
+                "id": "d5c9f124-1e82-4ed1-a66c-72ca452d5ea8",
+                "created_at": "2026-10-15T23:22:21.433449",
+                "role": "detective",
+                "name": "Шерлок Холмс",
+                "contact": "+7 900 000-00-01",
+                "specialization": "detective",
+                "rank": "Старший детектив",
+                "solved_cases": 13
+            },
+            "suspects": [
+                {
+                    "id": "1a210395-8e00-42a0-884b-1c9045612637",
+                    "created_at": "2026-10-15T23:22:21.433519",
+                    "role": "suspect",
+                    "name": "Иван Петров",
+                    "contact": "+7 911 111-11-11",
+                    "alibi": "был дома один",
+                    "suspicion_level": 90,
+                    "cleared": false
+                },
+                {
+                    "id": "2efce7a4-cd7e-4e01-affc-352f489b0bac",
+                    "created_at": "2026-10-15T23:22:21.433526",
+                    "role": "suspect",
+                    "name": "Анна Смирнова",
+                    "contact": "+7 922 222-22-22",
+                    "alibi": "была на работе, есть пропуск",
+                    "suspicion_level": 0,
+                    "cleared": true
+                }
+            ],
+            "witnesses": [
+                {
+                    "id": "381bac2b-6d66-41ba-8e96-da114517dffd",
+                    "created_at": "2026-10-15T23:22:21.433530",
+                    "role": "witness",
+                    "name": "Пётр Сидоров",
+                    "contact": "+7 933 333-33-33",
+                    "testimony": "видел мужчину в сером пальто",
+                    "reliability": 7
+                }
+            ],
+            "evidence": [
+                {
+                    "id": "26e45882-0011-48fd-95f6-51534db3f16c",
+                    "created_at": "2026-10-15T23:22:21.433548",
+                    "evidence_type": "fingerprint",
+                    "description": "Отпечаток на раме",
+                    "found_at": {
+                        "address": "ул. Пречистенка, 10",
+                        "place_type": "музей",
+                        "latitude": 55.744,
+                        "longitude": 37.597
+                    },
+                    "kind": "physical",
+                    "weight": 0.01,
+                    "storage_location": "Сейф №3"
+                },
+                {
+                    "id": "0c5ec6b4-f48a-4562-b2fb-57c27fc7b0f1",
+                    "created_at": "2026-10-15T23:22:21.433559",
+                    "evidence_type": "digital",
+                    "description": "Запись камеры у входа",
+                    "found_at": {
+                        "address": "ул. Пречистенка, 10",
+                        "place_type": "музей",
+                        "latitude": 55.744,
+                        "longitude": 37.597
+                    },
+                    "kind": "digital",
+                    "file_hash": "a3f5c9d2e81b4f7a",
+                    "device": "Камера №2"
+                }
+            ],
+            "interrogations": [
+                {
+                    "id": "63585dc4-ef70-4af4-957c-41dcf781fdc5",
+                    "created_at": "2026-10-15T23:22:21.433568",
+                    "person": {
+                        "id": "1a210395-8e00-42a0-884b-1c9045612637",
+                        "created_at": "2026-10-15T23:22:21.433519",
+                        "role": "suspect",
+                        "name": "Иван Петров",
+                        "contact": "+7 911 111-11-11",
+                        "alibi": "был дома один",
+                        "suspicion_level": 90,
+                        "cleared": false
+                    },
+                    "conducted_at": "2026-10-01T14:30:00",
+                    "transcript": "Утверждает, что весь вечер был дома",
+                    "duration_minutes": 45
+                },
+                {
+                    "id": "90f599cf-939e-4bfd-9894-e315ce0f68e2",
+                    "created_at": "2026-10-15T23:22:21.433577",
+                    "person": {
+                        "id": "381bac2b-6d66-41ba-8e96-da114517dffd",
+                        "created_at": "2026-10-15T23:22:21.433530",
+                        "role": "witness",
+                        "name": "Пётр Сидоров",
+                        "contact": "+7 933 333-33-33",
+                        "testimony": "видел мужчину в сером пальто",
+                        "reliability": 7
+                    },
+                    "conducted_at": "2026-10-01T16:00:00",
+                    "transcript": "Описал подозрительного мужчину у служебного входа",
+                    "duration_minutes": 30
+                }
+            ]
+        },
+        {
+            "id": "3f07c006-ce48-4841-a2e2-b527cb9182c0",
+            "created_at": "2026-10-15T23:22:21.433590",
+            "title": "Взлом корпоративной почты",
+            "status": "in_progress",
+            "priority": "critical",
+            "location": {
+                "address": "Пресненская наб., 12",
+                "place_type": "офис",
+                "latitude": 55.749,
+                "longitude": 37.539
+            },
+            "lead_detective": {
+                "id": "44509381-3a1b-494a-be28-9b9bbf1adc79",
+                "created_at": "2026-10-15T23:22:21.433480",
+                "role": "detective",
+                "name": "Джон Ватсон",
+                "contact": "+7 900 000-00-02",
+                "specialization": "forensic",
+                "rank": "Детектив",
+                "solved_cases": 3
+            },
+            "suspects": [
+                {
+                    "id": "98782a91-c6be-4103-ae59-f552c90137cc",
+                    "created_at": "2026-10-15T23:22:21.433593",
+                    "role": "suspect",
+                    "name": "Олег Кузнецов",
+                    "contact": "+7 944 444-44-44",
+                    "alibi": "был в отпуске",
+                    "suspicion_level": 60,
+                    "cleared": false
+                }
+            ],
+            "witnesses": [],
+            "evidence": [
+                {
+                    "id": "e81b8abe-2514-4480-a603-b5e631807ba1",
+                    "created_at": "2026-10-15T23:22:21.433597",
+                    "evidence_type": "digital",
+                    "description": "Логи почтового сервера",
+                    "found_at": {
+                        "address": "Пресненская наб., 12",
+                        "place_type": "офис",
+                        "latitude": 55.749,
+                        "longitude": 37.539
+                    },
+                    "kind": "digital",
+                    "file_hash": "9b1e7c3f0a2d5e8b",
+                    "device": "Сервер mail-01"
+                }
+            ],
+            "interrogations": []
+        },
+        {
+            "id": "40ef9eb1-992f-4b99-8ecd-32cd91707670",
+            "created_at": "2026-10-15T23:22:21.433603",
+            "title": "Пропажа собаки",
+            "status": "in_progress",
+            "priority": "low",
+            "location": {
+                "address": "Парк Горького",
+                "place_type": "улица",
+                "latitude": 55.729,
+                "longitude": 37.601
+            },
+            "lead_detective": {
+                "id": "ce0f8529-9f61-4f94-97db-0837cd57b56e",
+                "created_at": "2026-10-15T23:22:21.433485",
+                "role": "detective",
+                "name": "Инспектор Лестрейд",
+                "contact": "+7 900 000-00-03",
+                "specialization": "analyst",
+                "rank": "Инспектор",
+                "solved_cases": 0
+            },
+            "suspects": [],
+            "witnesses": [
+                {
+                    "id": "6ff4763e-b302-4ed4-926f-e48fcd5ca480",
+                    "created_at": "2026-10-15T23:22:21.433605",
+                    "role": "witness",
+                    "name": "Мария Волкова",
+                    "contact": "+7 955 555-55-55",
+                    "testimony": "видела собаку у пруда",
+                    "reliability": 4
+                }
+            ],
+            "evidence": [
+                {
+                    "id": "1a6e3d31-1173-499e-a1cb-c92b31633298",
+                    "created_at": "2026-10-15T23:22:21.433610",
+                    "evidence_type": "document",
+                    "description": "Ошейник с жетоном",
+                    "found_at": {
+                        "address": "Парк Горького",
+                        "place_type": "улица",
+                        "latitude": 55.729,
+                        "longitude": 37.601
+                    },
+                    "kind": "physical",
+                    "weight": 0.2,
+                    "storage_location": "Шкаф улик №1"
+                }
+            ],
+            "interrogations": []
+        },
+        {
+            "id": "34d6a398-5102-4106-aafc-59bae90ae6e5",
+            "created_at": "2026-10-15T23:22:21.433615",
+            "title": "Подделка завещания",
+            "status": "open",
+            "priority": "medium",
+            "location": {
+                "address": "ул. Ильинка, 4",
+                "place_type": "квартира",
+                "latitude": 55.755,
+                "longitude": 37.625
+            },
+            "lead_detective": null,
+            "suspects": [],
+            "witnesses": [],
+            "evidence": [
+                {
+                    "id": "5ede521a-991f-4551-b6b3-f43b8a3d7401",
+                    "created_at": "2026-10-15T23:22:21.433617",
+                    "evidence_type": "document",
+                    "description": "Завещание с подписью",
+                    "found_at": {
+                        "address": "ул. Ильинка, 4",
+                        "place_type": "квартира",
+                        "latitude": 55.755,
+                        "longitude": 37.625
+                    },
+                    "kind": "physical",
+                    "weight": 0.05,
+                    "storage_location": "Сейф №1"
+                }
+            ],
+            "interrogations": []
+        }
+    ]
+}
