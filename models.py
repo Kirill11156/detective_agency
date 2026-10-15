@@ -6,6 +6,8 @@ from typing import Any
 from uuid import UUID, uuid4
 
 from exceptions import (
+    CaseAlreadyClosedError,
+    EvidenceNotFoundError,
     InvalidReliabilityError,
     InvalidSuspicionLevelError,
     SuspectAlreadyClearedError,
@@ -601,3 +603,210 @@ class Interrogation(BaseEntity):
         return (f"Допрос: {self._person}, "
                 f"{self._conducted_at:%d.%m.%Y %H:%M}, "
                 f"{self._duration_minutes} мин")
+
+
+# Дело: главный класс, собирает людей, улики и допросы
+class Case(BaseEntity):
+
+    def __init__(self, title: str, location: Location,
+                 priority: CasePriority = CasePriority.MEDIUM,
+                 entity_id: UUID | None = None,
+                 created_at: datetime | None = None) -> None:
+        super().__init__(entity_id, created_at)
+        if not isinstance(location, Location):
+            raise TypeError("Место преступления должно быть Location")
+        if not isinstance(priority, CasePriority):
+            raise TypeError("Приоритет должен быть CasePriority")
+        self._title = check_text(title, "Название дела")
+        self._location = location
+        self._priority = priority
+        self._status = CaseStatus.OPEN
+        self._lead_detective: Detective | None = None
+        self._suspects: list[Suspect] = []
+        self._witnesses: list[Witness] = []
+        self._evidence: list[Evidence] = []
+        self._interrogations: list[Interrogation] = []
+
+    @property
+    def title(self) -> str:
+        return self._title
+
+    @property
+    def location(self) -> Location:
+        return self._location
+
+    @property
+    def status(self) -> CaseStatus:
+        return self._status
+
+    @property
+    def priority(self) -> CasePriority:
+        return self._priority
+
+    @priority.setter
+    def priority(self, value: CasePriority) -> None:
+        self._ensure_open()
+        if not isinstance(value, CasePriority):
+            raise TypeError("Приоритет должен быть CasePriority")
+        self._priority = value
+
+    @property
+    def is_closed(self) -> bool:
+        return self._status in (CaseStatus.CLOSED, CaseStatus.ARCHIVED)
+
+    # наружу отдаём копии списков, чтобы их не меняли в обход проверок
+    @property
+    def suspects(self) -> list[Suspect]:
+        return list(self._suspects)
+
+    @property
+    def witnesses(self) -> list[Witness]:
+        return list(self._witnesses)
+
+    @property
+    def evidence(self) -> list[Evidence]:
+        return list(self._evidence)
+
+    @property
+    def interrogations(self) -> list[Interrogation]:
+        return list(self._interrogations)
+
+    @property
+    def lead_detective(self) -> Detective | None:
+        return self._lead_detective
+
+    # назначение детектива переводит новое дело в работу
+    @lead_detective.setter
+    def lead_detective(self, detective: Detective) -> None:
+        self._ensure_open()
+        if not isinstance(detective, Detective):
+            raise TypeError("Ведущим может быть только Detective")
+        self._lead_detective = detective
+        if self._status == CaseStatus.OPEN:
+            self._status = CaseStatus.IN_PROGRESS
+
+    # любое изменение закрытого дела запрещено
+    def _ensure_open(self) -> None:
+        if self.is_closed:
+            raise CaseAlreadyClosedError(self._title)
+
+    def add_suspect(self, suspect: Suspect) -> None:
+        self._ensure_open()
+        if not isinstance(suspect, Suspect):
+            raise TypeError("Ожидался объект Suspect")
+        if any(s.id == suspect.id for s in self._suspects):
+            raise ValueError(f"{suspect.name} уже проходит по делу")
+        self._suspects.append(suspect)
+
+    def add_witness(self, witness: Witness) -> None:
+        self._ensure_open()
+        if not isinstance(witness, Witness):
+            raise TypeError("Ожидался объект Witness")
+        if any(w.id == witness.id for w in self._witnesses):
+            raise ValueError(f"{witness.name} уже проходит по делу")
+        self._witnesses.append(witness)
+
+    def add_evidence(self, evidence: Evidence) -> None:
+        self._ensure_open()
+        if not isinstance(evidence, Evidence):
+            raise TypeError("Ожидался объект Evidence")
+        self._evidence.append(evidence)
+
+    def find_evidence(self, evidence_id: UUID) -> Evidence:
+        for item in self._evidence:
+            if item.id == evidence_id:
+                return item
+        raise EvidenceNotFoundError(evidence_id)
+
+    def remove_evidence(self, evidence_id: UUID) -> None:
+        self._ensure_open()
+        self._evidence.remove(self.find_evidence(evidence_id))
+
+    # допрашивать можно только тех, кто проходит по делу
+    def add_interrogation(self, item: Interrogation) -> None:
+        self._ensure_open()
+        if not isinstance(item, Interrogation):
+            raise TypeError("Ожидался объект Interrogation")
+        participants = self._suspects + self._witnesses
+        if not any(p.id == item.person.id for p in participants):
+            raise ValueError(f"{item.person.name} не проходит по делу")
+        self._interrogations.append(item)
+
+    def suspend(self) -> None:
+        self._ensure_open()
+        self._status = CaseStatus.SUSPENDED
+
+    def resume(self) -> None:
+        if self._status != CaseStatus.SUSPENDED:
+            raise ValueError("Возобновить можно только приостановленное дело")
+        self._status = (CaseStatus.IN_PROGRESS if self._lead_detective
+                        else CaseStatus.OPEN)
+
+    def close(self) -> None:
+        self._ensure_open()
+        self._status = CaseStatus.CLOSED
+
+    def archive(self) -> None:
+        if self._status != CaseStatus.CLOSED:
+            raise ValueError("В архив можно отправить только закрытое дело")
+        self._status = CaseStatus.ARCHIVED
+
+    # читаемая сводка; улики описывают себя сами через get_summary()
+    def get_summary(self) -> str:
+        detective = (self._lead_detective.name if self._lead_detective
+                     else "не назначен")
+        lines = [
+            f"Дело «{self._title}»",
+            f"  Статус: {self._status.value}, "
+            f"приоритет: {self._priority.value}",
+            f"  Место: {self._location}",
+            f"  Ведущий детектив: {detective}",
+            f"  Подозреваемые: {len(self._suspects)}, "
+            f"свидетели: {len(self._witnesses)}, "
+            f"допросы: {len(self._interrogations)}",
+        ]
+        for suspect in self._suspects:
+            mark = " (оправдан)" if suspect.cleared else ""
+            lines.append(f"    - {suspect.name}: подозрение "
+                         f"{suspect.suspicion_level}{mark}")
+        lines.append(f"  Улики: {len(self._evidence)}")
+        for item in self._evidence:
+            lines.append(f"    - {item.get_summary()}")
+        return "\n".join(lines)
+
+    def to_dict(self) -> dict[str, Any]:
+        data = self._base_dict()
+        data["title"] = self._title
+        data["status"] = self._status.value
+        data["priority"] = self._priority.value
+        data["location"] = self._location.to_dict()
+        data["lead_detective"] = (self._lead_detective.to_dict()
+                                  if self._lead_detective else None)
+        data["suspects"] = [s.to_dict() for s in self._suspects]
+        data["witnesses"] = [w.to_dict() for w in self._witnesses]
+        data["evidence"] = [e.to_dict() for e in self._evidence]
+        data["interrogations"] = [i.to_dict() for i in self._interrogations]
+        return data
+
+    # списки заполняем напрямую: закрытое дело тоже должно загрузиться
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> "Case":
+        case = cls(
+            data["title"],
+            Location.from_dict(data["location"]),
+            CasePriority(data["priority"]),
+            UUID(data["id"]),
+            datetime.fromisoformat(data["created_at"]),
+        )
+        if data["lead_detective"] is not None:
+            case._lead_detective = Detective.from_dict(data["lead_detective"])
+        case._suspects = [Suspect.from_dict(s) for s in data["suspects"]]
+        case._witnesses = [Witness.from_dict(w) for w in data["witnesses"]]
+        case._evidence = [Evidence.from_dict(e) for e in data["evidence"]]
+        people: dict[UUID, Person] = {
+            p.id: p for p in case._suspects + case._witnesses}
+        case._interrogations = [
+            Interrogation.from_dict(i, people)
+            for i in data["interrogations"]]
+        case._status = CaseStatus(data["status"])
+        return case
